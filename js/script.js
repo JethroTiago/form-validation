@@ -1,13 +1,13 @@
 import ehUmCPF from "./valida-cpf.js";
-import ehMaiordeIdade from "./valida-idade.js";
-const camposDoFormulario = document.querySelectorAll("[required]");
-const formulario = document.querySelector("[data-formulario]");
+import ehMaiorDeIdade from "./valida-idade.js";
+const camposDoFormulario = document.querySelectorAll('[required]')
+const formulario = document.querySelector('[data-formulario]');
 
 formulario.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const listaRespostas = {
-        "nome": e.target.elements["nomes"].value,
+        "nome": e.target.elements["nome"].value,
         "email": e.target.elements["email"].value,
         "rg": e.target.elements["rg"].value,
         "cpf": e.target.elements["cpf"].value,
@@ -16,13 +16,12 @@ formulario.addEventListener("submit", (e) => {
 
     localStorage.setItem("cadastro", JSON.stringify(listaRespostas));
 
-    window.location.href = './abrir-conta-form-2.html';
-
+    window.location.href = "./abrir-conta-form-2.html";
 })
 
 camposDoFormulario.forEach((campo) => {
-    campo.addEventListener("blur", () => verificaCampo(campo.value));
-    campo.addEventListener("invalid", evento => evento.preventDefault());
+    campo.addEventListener("blur", () => verificaCampo(campo));
+    campo.addEventListener("invalid", evento => evento.preventDefault())
 })
 
 const tiposDeErro = [
@@ -42,7 +41,7 @@ const mensagens = {
     email: {
         valueMissing: "O campo de e-mail não pode estar vazio.",
         typeMismatch: "Por favor, preencha um email válido.",
-        tooShort: "Por favor, preencha um e-mail válido."
+        tooShort: "Por favor, preencha um email válido."
     },
     rg: {
         valueMissing: "O campo de RG não pode estar vazio.",
@@ -71,18 +70,17 @@ function verificaCampo(campo) {
         ehUmCPF(campo);
     }
     if (campo.name == "aniversario" && campo.value != "") {
-        ehMaiordeIdade(campo);
+        ehMaiorDeIdade(campo);
     }
     tiposDeErro.forEach(erro => {
         if (campo.validity[erro]) {
             mensagem = mensagens[campo.name][erro];
-            console.log(mensagens);
+            console.log(mensagem);
         }
     })
-
     const mensagemErro = campo.parentNode.querySelector('.mensagem-erro');
     const validadorDeInput = campo.checkValidity();
-    
+
     if (!validadorDeInput) {
         mensagemErro.textContent = mensagem;
     } else {
